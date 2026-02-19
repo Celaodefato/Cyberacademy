@@ -44,7 +44,11 @@ export function useXP() {
         }
 
         setStats(updated)
-        localStorage.setItem('cyberpath_stats', JSON.stringify(updated))
+        try {
+            localStorage.setItem('cyberpath_stats', JSON.stringify(updated))
+        } catch (e) {
+            console.error('Failed to save stats', e)
+        }
     }
 
     const addXP = (amount: number) => {

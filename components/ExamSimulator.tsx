@@ -3,7 +3,11 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Clock, CheckCircle, XCircle, Award, ArrowRight, ShieldAlert, Terminal as TerminalIcon, Database } from 'lucide-react'
 import TerminalWindow from './TerminalWindow'
-import TerminalSimulator from './TerminalSimulator'
+import dynamic from 'next/dynamic'
+const TerminalSimulator = dynamic(() => import('./TerminalSimulator'), {
+    ssr: false,
+    loading: () => <div className="h-full w-full bg-cyber-dark animate-pulse border border-white/5 rounded-lg flex items-center justify-center text-[10px] uppercase font-bold text-neon-green/20">Loading_Terminal...</div>
+})
 import { Exam, ExamQuestion } from '@/data/exams'
 import { useXP } from '@/hooks/useXP'
 

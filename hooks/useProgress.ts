@@ -29,7 +29,11 @@ export function useProgress() {
 
     const saveProgress = (updated: UserProgress) => {
         setProgress(updated)
-        localStorage.setItem('cyberpath_progress', JSON.stringify(updated))
+        try {
+            localStorage.setItem('cyberpath_progress', JSON.stringify(updated))
+        } catch (e) {
+            console.error('Failed to save progress', e)
+        }
     }
 
     const completeLesson = (lessonId: string) => {
