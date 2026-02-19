@@ -28,6 +28,23 @@ import LayoutWrapper from '@/components/LayoutWrapper'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={firaCode.variable}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) {
+                      registration.unregister();
+                    }
+                  });
+                });
+              }
+            `
+          }}
+        />
+      </head>
       <body className="font-mono bg-cyber-black text-neon-green min-h-screen selection:bg-neon-green/30 selection:text-neon-green">
         <div className="scanlines" />
         <LayoutWrapper>
