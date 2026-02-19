@@ -21,19 +21,23 @@ export default function QuizPage({ params }: { params: Promise<Params> }) {
 
     function handleComplete(score: number, passed: boolean) {
         setDone(true)
-        const stored = localStorage.getItem('cyberpath_demo')
-        const d = stored ? JSON.parse(stored) : {}
-        const xpEarned = passed ? 100 : 50
-        const newXp = (d.xp || 0) + xpEarned
-        const newLevel = Math.floor(newXp / 500) + 1
-        const newBadges = [...(d.badges || [])]
-        if (passed && levelData.badge && !newBadges.includes(levelData.badge)) {
-            newBadges.push(levelData.badge)
+        try {
+            const stored = localStorage.getItem('cyberpath_demo')
+            const d = stored ? JSON.parse(stored) : {}
+            const xpEarned = passed ? 100 : 50
+            const newXp = (d.xp || 0) + xpEarned
+            const newLevel = Math.floor(newXp / 500) + 1
+            const newBadges = [...(d.badges || [])]
+            if (passed && levelData.badge && !newBadges.includes(levelData.badge)) {
+                newBadges.push(levelData.badge)
+            }
+            const completedQuizzes = [...(d.completedQuizzes || []), `${path}-${level}`]
+            localStorage.setItem('cyberpath_demo', JSON.stringify({
+                ...d, xp: newXp, level: newLevel, badges: newBadges, completedQuizzes
+            }))
+        } catch (e) {
+            console.error('Failed to update quiz stats in localStorage', e)
         }
-        const completedQuizzes = [...(d.completedQuizzes || []), `${path}-${level}`]
-        localStorage.setItem('cyberpath_demo', JSON.stringify({
-            ...d, xp: newXp, level: newLevel, badges: newBadges, completedQuizzes
-        }))
     }
 
     return (

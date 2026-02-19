@@ -20,8 +20,13 @@ const EXTERNAL_LABS = [
 
 function SimTerminal({ challenge }: { challenge: typeof CHALLENGES[0] | null }) {
     const handleCommand = (cmd: string) => {
-        const stored = typeof window !== 'undefined' ? localStorage.getItem('cyberpath_stats') : null
-        const stats = stored ? JSON.parse(stored) : null
+        let stats = null
+        try {
+            const stored = typeof window !== 'undefined' ? localStorage.getItem('cyberpath_stats') : null
+            stats = stored ? JSON.parse(stored) : null
+        } catch (e) {
+            console.error('Failed to access localStorage')
+        }
         const res = terminalInterpreter(cmd, challenge, stats)
         return res.output
     }

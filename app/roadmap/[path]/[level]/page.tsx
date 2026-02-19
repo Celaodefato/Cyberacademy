@@ -21,11 +21,15 @@ export default function RoadmapPage({ params }: { params: Promise<Params> }) {
         ?? CURRICULUM[0]
 
     useEffect(() => {
-        const stored = localStorage.getItem('cyberpath_stats')
-        if (stored) {
-            const d = JSON.parse(stored)
-            setUser({ username: d.username || 'hacker', xp: d.xp || 0, path: d.path || path as 'red' | 'blue' | 'purple' })
-            setCompleted(d.completedLessons || [])
+        try {
+            const stored = localStorage.getItem('cyberpath_stats')
+            if (stored) {
+                const d = JSON.parse(stored)
+                setUser({ username: d.username || 'hacker', xp: d.xp || 0, path: d.path || path as 'red' | 'blue' | 'purple' })
+                setCompleted(d.completedLessons || [])
+            }
+        } catch (e) {
+            console.error('Failed to read cyberpath_stats from localStorage', e)
         }
     }, [path])
 
@@ -33,11 +37,15 @@ export default function RoadmapPage({ params }: { params: Promise<Params> }) {
         if (completed.includes(id)) return
         const newCompleted = [...completed, id]
         setCompleted(newCompleted)
-        const stored = localStorage.getItem('cyberpath_stats')
-        const d = stored ? JSON.parse(stored) : {}
-        const newXp = (d.xp || 0) + 50
-        localStorage.setItem('cyberpath_stats', JSON.stringify({ ...d, xp: newXp, completedLessons: newCompleted }))
-        setUser(u => ({ ...u, xp: newXp }))
+        try {
+            const stored = localStorage.getItem('cyberpath_stats')
+            const d = stored ? JSON.parse(stored) : {}
+            const newXp = (d.xp || 0) + 50
+            localStorage.setItem('cyberpath_stats', JSON.stringify({ ...d, xp: newXp, completedLessons: newCompleted }))
+            setUser(u => ({ ...u, xp: newXp }))
+        } catch (e) {
+            console.error('Failed to update stats in localStorage', e)
+        }
     }
 
     const lesson = levelData.lessons[activeLesson]

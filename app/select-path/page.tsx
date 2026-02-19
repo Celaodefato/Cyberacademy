@@ -14,9 +14,13 @@ function PathSelectionContent() {
     function savePath() {
         if (!selected) return
         setConfirming(true)
-        const stored = localStorage.getItem('cyberpath_stats')
-        const data = stored ? JSON.parse(stored) : {}
-        localStorage.setItem('cyberpath_stats', JSON.stringify({ ...data, path: selected }))
+        try {
+            const stored = localStorage.getItem('cyberpath_stats')
+            const data = stored ? JSON.parse(stored) : {}
+            localStorage.setItem('cyberpath_stats', JSON.stringify({ ...data, path: selected }))
+        } catch (e) {
+            console.error('Failed to save to localStorage', e)
+        }
         setTimeout(() => router.push('/dashboard'), 800)
     }
 

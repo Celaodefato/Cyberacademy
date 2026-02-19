@@ -17,13 +17,13 @@ export function useProgress() {
     const [progress, setProgress] = useState<UserProgress>(INITIAL_PROGRESS)
 
     useEffect(() => {
-        const saved = localStorage.getItem('cyberpath_progress')
-        if (saved) {
-            try {
+        try {
+            const saved = localStorage.getItem('cyberpath_progress')
+            if (saved) {
                 setProgress(JSON.parse(saved))
-            } catch (e) {
-                console.error('Failed to parse progress', e)
             }
+        } catch (e) {
+            console.error('Failed to parse progress from localStorage', e)
         }
     }, [])
 

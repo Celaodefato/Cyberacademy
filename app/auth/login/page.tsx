@@ -27,7 +27,11 @@ function LoginForm() {
             router.push('/dashboard')
         } catch {
             // Demo mode: skip auth if Supabase not configured
-            localStorage.setItem('cyberpath_demo', JSON.stringify({ email, username: email.split('@')[0], xp: 250, level: 1, path: null }))
+            try {
+                localStorage.setItem('cyberpath_demo', JSON.stringify({ email, username: email.split('@')[0], xp: 250, level: 1, path: null }))
+            } catch (e) {
+                console.error('Failed to set demo session in localStorage', e)
+            }
             router.push('/select-path')
         } finally {
             setLoading(false)

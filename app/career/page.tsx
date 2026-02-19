@@ -10,13 +10,17 @@ export default function CareerHubPage() {
     const [stats, setStats] = useState({ labsSolved: 0, certsEarned: 0 })
 
     useEffect(() => {
-        const stored = localStorage.getItem('cyberpath_stats')
-        if (stored) {
-            const d = JSON.parse(stored)
-            setStats({
-                labsSolved: (d.completedLabs || []).length,
-                certsEarned: (d.badges || []).length
-            })
+        try {
+            const stored = localStorage.getItem('cyberpath_stats')
+            if (stored) {
+                const d = JSON.parse(stored)
+                setStats({
+                    labsSolved: (d.completedLabs || []).length,
+                    certsEarned: (d.badges || []).length
+                })
+            }
+        } catch (e) {
+            console.error('Failed to read cyberpath_stats from localStorage', e)
         }
     }, [])
 

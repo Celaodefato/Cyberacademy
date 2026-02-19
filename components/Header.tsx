@@ -14,11 +14,15 @@ export default function Header() {
             setTime(now.toLocaleTimeString('pt-BR', { hour12: false }))
         }, 1000)
 
-        const stored = localStorage.getItem('cyberpath_demo')
-        if (stored) {
-            const d = JSON.parse(stored)
-            setXp({ current: d.xp || 0, next: 5000 })
-            setUser({ username: d.username || 'hacker' })
+        try {
+            const stored = localStorage.getItem('cyberpath_demo')
+            if (stored) {
+                const d = JSON.parse(stored)
+                setXp({ current: d.xp || 0, next: 5000 })
+                setUser({ username: d.username || 'hacker' })
+            }
+        } catch (e) {
+            console.error('Failed to read cyberpath_demo from localStorage', e)
         }
 
         return () => clearInterval(timer)

@@ -27,10 +27,14 @@ export default function Sidebar() {
     const [hovered, setHovered] = useState<string | null>(null)
 
     useEffect(() => {
-        const stored = localStorage.getItem('cyberpath_stats')
-        if (stored) {
-            const d = JSON.parse(stored)
-            setUserPath(d.path || null)
+        try {
+            const stored = localStorage.getItem('cyberpath_stats')
+            if (stored) {
+                const d = JSON.parse(stored)
+                setUserPath(d.path || null)
+            }
+        } catch (e) {
+            console.error('Failed to read cyberpath_stats from localStorage', e)
         }
     }, [])
 

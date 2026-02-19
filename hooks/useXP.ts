@@ -25,13 +25,13 @@ export function useXP() {
     const [stats, setStats] = useState<UserStats>(INITIAL_STATS)
 
     useEffect(() => {
-        const saved = localStorage.getItem('cyberpath_stats')
-        if (saved) {
-            try {
+        try {
+            const saved = localStorage.getItem('cyberpath_stats')
+            if (saved) {
                 setStats(JSON.parse(saved))
-            } catch (e) {
-                console.error('Failed to parse stats', e)
             }
+        } catch (e) {
+            console.error('Failed to read stats from localStorage', e)
         }
     }, [])
 

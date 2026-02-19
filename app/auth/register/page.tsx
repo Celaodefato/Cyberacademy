@@ -42,10 +42,14 @@ function RegisterForm() {
             router.push('/select-path')
         } catch {
             // Demo mode
-            localStorage.setItem('cyberpath_demo', JSON.stringify({
-                email, username: username || email.split('@')[0], xp: 0, level: 1, path: defaultPath,
-                badges: [], completedLessons: [], completedLabs: []
-            }))
+            try {
+                localStorage.setItem('cyberpath_demo', JSON.stringify({
+                    email, username: username || email.split('@')[0], xp: 0, level: 1, path: defaultPath,
+                    badges: [], completedLessons: [], completedLabs: []
+                }))
+            } catch (e) {
+                console.error('Failed to set demo session in localStorage', e)
+            }
             router.push(defaultPath ? `/select-path?path=${defaultPath}` : '/select-path')
         } finally {
             setLoading(false)
